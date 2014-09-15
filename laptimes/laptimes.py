@@ -6,13 +6,16 @@ from bottle import route, run, template, debug, view, static_file
 def js_static(filename):
     return static_file(filename, root='./static/js')
 
+
 @route('/img/<filename>')
 def img_static(filename):
     return static_file(filename, root='./static/img')
 
+
 @route('/css/<filename>')
 def img_static(filename):
     return static_file(filename, root='./static/css')
+
 
 @route('/')
 @route('/laptimes')
@@ -32,6 +35,7 @@ def show_laptimes(top_num=25):
     con.close()
     output = template('templates/laptimes', rows=data, top_num=top_num)
     return output
+
 
 debug(True)
 run(reloader=True)
