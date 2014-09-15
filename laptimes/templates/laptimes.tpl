@@ -5,6 +5,8 @@
                 <th>Rank</th>
                 <th>Racer Name</th>
                 <th>Laptime</th>
+                <th>Date and Time</th>
+                <th>Conditions</th>
             </tr>
             %i = 1
             %for row in rows:
@@ -13,6 +15,7 @@
                 %for col in row:
                 <td>{{col}}</td>
                 %end
+                <td>weather</td>
             </tr>
             %   i += 1
             %end

@@ -22,7 +22,11 @@ def show_laptimes(top_num=25):
     c = con.cursor()
     if top_num > 500:
          top_num = 25
-    c.execute("select racers.name, laptimes.laptime from laptimes inner join racers on laptimes.racer_id=racers.id order by laptime ASC limit %s", (top_num,))
+    c.execute('SELECT racers.name, laptimes.laptime, laptimes.datetime \
+                FROM laptimes \
+                INNER JOIN racers ON laptimes.racer_id = racers.id \
+                ORDER BY laptime ASC \
+                LIMIT %s', (top_num,))
     data = c.fetchall()
     c.close()
     con.close()
