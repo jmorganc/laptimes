@@ -14,6 +14,7 @@ def img_static(filename):
 def img_static(filename):
     return static_file(filename, root='./static/css')
 
+@route('/')
 @route('/laptimes')
 def show_laptimes():
   con = MySQLdb.connect(config.opts['mysql']['host'], config.opts['mysql']['username'], config.opts['mysql']['password'], config.opts['mysql']['database']);
