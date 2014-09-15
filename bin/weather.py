@@ -3,12 +3,15 @@ Scrape weather from Weather Underground
 """
 
 import sys
+import os
 import requests
 import datetime
 import MySQLdb
 import rfc822
-import config
 import pprint
+
+sys.path.append(os.path.abspath('{0}/../../'.format(os.path.abspath(__file__))))
+from laptimes import config
 
 
 def main():

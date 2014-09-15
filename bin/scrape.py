@@ -1,14 +1,15 @@
-#!/usr/bin/python
-
 import pycurl
 import cStringIO
 from bs4 import BeautifulSoup
 import time
 import datetime
 import sys
+import os
 import MySQLdb
-import config
 import pprint
+
+sys.path.append(os.path.abspath('{0}/../../'.format(os.path.abspath(__file__))))
+from laptimes import config
 
 
 def main():
