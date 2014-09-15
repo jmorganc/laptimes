@@ -19,7 +19,15 @@ def img_static(filename):
 
 @route('/racer/<id:int>')
 def racer_profile(id):
-    return template('templates/racer_profile', id=id)
+    con = mysql_connect()
+    c = con.cursor()
+
+    c.execute('SELECT * FROM racers WHERE id = %s', (id,))
+    racer = c.fetchone()
+
+    c.close()
+    con.close()
+    return template('templates/racer_profile', racer=racer)
 
 
 @route('/')
