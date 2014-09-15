@@ -24,7 +24,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="brand" href="#">Laptimes</a>
+                <a class="brand" href="/">Laptimes</a>
                 <div class="nav-collapse collapse">
                     <ul class="nav">
                         <li class="active"><a href="/">Home</a></li>
