@@ -16,14 +16,17 @@ def img_static(filename):
 
 @route('/')
 @route('/laptimes')
-def show_laptimes():
-  con = MySQLdb.connect(config.opts['mysql']['host'], config.opts['mysql']['username'], config.opts['mysql']['password'], config.opts['mysql']['database']);
-  c = con.cursor()
-  c.execute("select racers.name, laptimes.laptime from laptimes inner join racers on laptimes.racer_id=racers.id order by laptime limit 25")
-  data = c.fetchall()
-  c.close()
-  output = template('templates/laptimes', rows=data)
-  return output
+@route('/laptimes/top/<top_num:int>')
+def show_laptimes(top_num=25):
+    con = MySQLdb.connect(config.opts['mysql']['host'], config.opts['mysql']['username'], config.opts['mysql']['password'], config.opts['mysql']['database']);
+    c = con.cursor()
+    if top_num > 500:
+         top_num = 25
+    c.execute("select racers.name, laptimes.laptime from laptimes inner join racers on laptimes.racer_id=racers.id order by laptime ASC limit %s", (top_num,))
+    data = c.fetchall()
+    c.close()
+    output = template('templates/laptimes', rows=data, top_num=top_num)
+    return output
 
 debug(True)
 run(reloader=True)
