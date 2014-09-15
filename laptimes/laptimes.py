@@ -16,7 +16,7 @@ def img_static(filename):
 
 @route('/laptimes')
 def show_laptimes():
-  con = MySQLdb.connect('');
+  con = MySQLdb.connect(config.opts['mysql']['host'], config.opts['mysql']['username'], config.opts['mysql']['password'], config.opts['mysql']['database']);
   c = con.cursor()
   c.execute("select racers.name, laptimes.laptime from laptimes inner join racers on laptimes.racer_id=racers.id order by laptime limit 25")
   data = c.fetchall()
@@ -25,5 +25,4 @@ def show_laptimes():
   return output
 
 debug(True)
-run(host='0.0.0.0', reloader=True)
 run(reloader=True)
