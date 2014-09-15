@@ -25,6 +25,7 @@ def show_laptimes(top_num=25):
     c.execute("select racers.name, laptimes.laptime from laptimes inner join racers on laptimes.racer_id=racers.id order by laptime ASC limit %s", (top_num,))
     data = c.fetchall()
     c.close()
+    con.close()
     output = template('templates/laptimes', rows=data, top_num=top_num)
     return output
 
