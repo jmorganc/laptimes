@@ -33,8 +33,18 @@ def show_laptimes(top_num=25):
     data = c.fetchall()
     c.close()
     con.close()
-    output = template('templates/laptimes', rows=data, top_num=top_num)
-    return output
+
+    return template('templates/laptimes', rows=data, top_num=top_num)
+
+
+@route('/about')
+def about():
+    return template('templates/about')
+
+
+@route('/contact')
+def contact():
+    return template('templates/contact')
 
 
 debug(True)
