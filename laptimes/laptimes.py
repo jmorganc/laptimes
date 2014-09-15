@@ -1,4 +1,5 @@
 import MySQLdb
+import config
 from bottle import route, run, template, debug, view, static_file
 
 @route('/js/<filename>')
@@ -24,4 +25,4 @@ def show_laptimes():
   return output
 
 debug(True)
-run(reloader=True)
+run(host='0.0.0.0', reloader=True)
