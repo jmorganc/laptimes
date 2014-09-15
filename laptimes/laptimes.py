@@ -26,3 +26,4 @@ def show_laptimes():
 
 debug(True)
 run(host='0.0.0.0', reloader=True)
+run(reloader=True)
