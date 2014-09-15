@@ -22,12 +22,19 @@ def racer_profile(id):
     con = mysql_connect()
     c = con.cursor()
 
-    c.execute('SELECT * FROM racers WHERE id = %s', (id,))
+    c.execute('SELECT * \
+                FROM racers \
+                WHERE id = %s', (id,))
     racer = c.fetchone()
+
+    c.execute('SELECT id, laptime, datetime, created \
+                FROM laptimes \
+                WHERE racer_id = %s', (id,))
+    laps = c.fetchall()
 
     c.close()
     con.close()
-    return template('templates/racer_profile', racer=racer)
+    return template('templates/racer_profile', racer=racer, laps=laps)
 
 
 @route('/')

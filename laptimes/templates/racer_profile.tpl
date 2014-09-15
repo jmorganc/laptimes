@@ -4,3 +4,11 @@
         %for key, val in racer.iteritems():
         {{key}}: {{val}}<br/>
         %end
+
+        <br/>
+
+        %for lap in laps:
+        %   for key, val in lap.iteritems():
+        {{key}}: {{val}}<br/>
+        %   end
+        %end
