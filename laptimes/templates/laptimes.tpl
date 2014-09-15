@@ -12,9 +12,9 @@
             %for row in rows:
             <tr>
                 <td>{{i}}</td>
-                %for col in row:
-                <td>{{col}}</td>
-                %end
+                <td><a href="/racer/{{row['id']}}">{{row['name']}}</a></td>
+                <td>{{row['laptime']}}</td>
+                <td>{{row['datetime']}}</td>
                 <td>weather</td>
             </tr>
             %   i += 1

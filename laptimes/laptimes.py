@@ -1,4 +1,4 @@
-import MySQLdb
+import MySQLdb, MySQLdb.cursors
 import config
 from bottle import route, run, template, debug, view, static_file
 
@@ -17,15 +17,20 @@ def img_static(filename):
     return static_file(filename, root='./static/css')
 
 
+@route('/racer/<id:int>')
+def racer_profile(id):
+    return template('templates/racer_profile', id=id)
+
+
 @route('/')
 @route('/laptimes')
 @route('/laptimes/top/<top_num:int>')
 def show_laptimes(top_num=25):
-    con = MySQLdb.connect(config.opts['mysql']['host'], config.opts['mysql']['username'], config.opts['mysql']['password'], config.opts['mysql']['database']);
+    con = mysql_connect()
     c = con.cursor()
     if top_num > 500:
          top_num = 25
-    c.execute('SELECT racers.name, laptimes.laptime, laptimes.datetime \
+    c.execute('SELECT racers.id, racers.name, laptimes.laptime, laptimes.datetime \
                 FROM laptimes \
                 INNER JOIN racers ON laptimes.racer_id = racers.id \
                 ORDER BY laptime ASC \
@@ -45,6 +50,11 @@ def about():
 @route('/contact')
 def contact():
     return template('templates/contact')
+
+
+# Set up the MySQL connection: host, user, pass, db, parameter to allow for a dictionary to be returned rather than a tuple
+def mysql_connect(host=config.opts['mysql']['host'], username=config.opts['mysql']['username'], password=config.opts['mysql']['password'], database=config.opts['mysql']['database']):
+    return MySQLdb.connect(host, username, password, database, cursorclass=MySQLdb.cursors.DictCursor)
 
 
 debug(True)
