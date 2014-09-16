@@ -1,4 +1,4 @@
-%rebase('templates/layout.tpl', title='Top {0}'.format(top_num))
+%rebase('templates/layout.tpl', title='Top {0}'.format(top_num), active_home='class="active"')
         <div class="page-header">
             <h1>Top {{top_num}} Laptimes</h1>
         </div>

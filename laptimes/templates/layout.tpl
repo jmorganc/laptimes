@@ -8,7 +8,7 @@
         <meta name="author" content="">
         <link rel="icon" href="/img/favicon.ico">
 
-        <title>Theme Template for Bootstrap</title>
+        <title>Laptimes - {{title}}</title>
 
         <!-- Bootstrap core CSS -->
         <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -47,7 +47,7 @@
                         <li><a href="/about">About</a></li>
                         <li><a href="/contact">Contact</a></li>
                         <li><a href="/search_racers">Racer Search</a></li>
-                        <li class="dropdown">
+                        <!-- <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="#">Action</a></li>
@@ -58,7 +58,7 @@
                                 <li><a href="#">Separated link</a></li>
                                 <li><a href="#">One more separated link</a></li>
                             </ul>
-                        </li>
+                        </li> -->
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
