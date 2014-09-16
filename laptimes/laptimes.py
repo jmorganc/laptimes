@@ -61,11 +61,11 @@ def search_racers():
 @route('/')
 @route('/laptimes')
 @route('/laptimes/top/<top_num:int>')
-def show_laptimes(top_num=25):
+def show_laptimes(top_num=10):
     con = mysql_connect()
     c = con.cursor()
     if top_num > 500:
-         top_num = 25
+         top_num = 10
     c.execute('SELECT racers.id, racers.name, laptimes.laptime, laptimes.datetime \
                 FROM laptimes \
                 INNER JOIN racers ON laptimes.racer_id = racers.id \
