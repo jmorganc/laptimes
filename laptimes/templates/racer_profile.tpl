@@ -75,14 +75,14 @@
         <br/>
 
         <div class="row">
-            <div class="col-md-6">
-                Something something I dunno what.<br/>
-                Or something.
-            </div>
             <div id="table_div" class="col-md-6"></div>
-        </div>
-        <br/>
-        <div class="row">
-            <div id="chart_div" style="width: 50%; height: 250px;" class="col-md-6"></div>
-            <div id="trend_div" style="width: 50%; height: 250px;" class="col-md-6"></div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div id="chart_div" style="width: 100%; height: 250px;" class="col-md-12"></div>
+                </div>
+                <div class="row">
+                    <div id="trend_div" style="width: 100%; height: 250px;" class="col-md-12"></div>
+                </div>
+            </div>
+
         </div>
