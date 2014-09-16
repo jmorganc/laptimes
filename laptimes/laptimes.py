@@ -41,7 +41,7 @@ def racer_profile(id):
 
 @route('/search_racers')
 def search():
-	return template('templates/search')
+	return template('templates/search', racers=None)
 
 
 @route('/search_racers', method='POST')
@@ -55,7 +55,7 @@ def search_racers():
 	racers = c.fetchall()
 	c.close()
 	con.close()
-	return template('templates/search_results', racers=racers)
+	return template('templates/search', racers=racers)
 
 
 @route('/')
