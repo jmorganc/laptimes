@@ -79,11 +79,11 @@ def show_laptimes(top_num=10):
     weather_data = {} 
     for row in data:
         average += row['laptime']
-        weather_data[row['id']] = get_weather(row['datetime'])
+        weather = get_weather(row['datetime'])
+        weather_data[row['id']] = weather
     average = average / top_num
 
-    weather_summary = weather_data
-    return template('templates/laptimes', rows=data, top_num=top_num, average=average, weather_summary=weather_summary)
+    return template('templates/laptimes', rows=data, top_num=top_num, average=average, weather_summary=weather_data)
 
 
 @route('/about')
@@ -107,8 +107,10 @@ def get_weather(datetime):
     weather = c.fetchone()
     c.close()
     con.close()
-
-    return weather
+    
+    if weather:
+        return weather
+    return {'weather': ''}
 
 
 # Set up the MySQL connection: host, user, pass, db, parameter to allow for a dictionary to be returned rather than a tuple
