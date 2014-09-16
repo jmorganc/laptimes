@@ -110,7 +110,7 @@ def get_weather(datetime):
     
     if weather:
         return weather
-    return {'weather': ''}
+    return {'weather': 'No data recorded'}
 
 
 # Set up the MySQL connection: host, user, pass, db, parameter to allow for a dictionary to be returned rather than a tuple
