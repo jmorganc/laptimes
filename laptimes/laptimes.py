@@ -75,7 +75,12 @@ def show_laptimes(top_num=25):
     c.close()
     con.close()
 
-    return template('templates/laptimes', rows=data, top_num=top_num)
+    average = 0.0
+    for row in data:
+        average += row['laptime']
+    average = average / top_num
+
+    return template('templates/laptimes', rows=data, top_num=top_num, average=average)
 
 
 @route('/about')

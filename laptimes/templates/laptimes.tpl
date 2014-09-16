@@ -2,6 +2,9 @@
         <div class="page-header">
             <h1>Top {{top_num}} Laptimes</h1>
         </div>
+
+        <h2>Average laptime: {{average}}</h2>
+
         <table class="table table-striped">
             <tr>
                 <th>Rank</th>

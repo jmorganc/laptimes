@@ -69,7 +69,7 @@
         </script>
 
         <div class="page-header">
-            <h1>{{racer['name']}}</h1>
+            <h1>{{racer['name']}} <small>created: {{racer['created']}}</small></h1>
         </div>
 
         <br/>
