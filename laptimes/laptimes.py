@@ -1,6 +1,6 @@
 import MySQLdb, MySQLdb.cursors
 import config
-from bottle import route, run, template, debug, view, static_file
+from bottle import route, run, template, debug, view, static_file, request
 
 @route('/js/<filename>')
 def js_static(filename):
@@ -36,7 +36,22 @@ def racer_profile(id):
     con.close()
     return template('templates/racer_profile', racer=racer, laps=laps)
 
+@route('/search_racers')
+def search():
+	return template('templates/search')
 
+@route('/search_racers', method='POST')
+def search_racers():
+	racer_name = request.forms.get('racer_name')
+	con = mysql_connect()
+	c = con.cursor()
+	c.execute('SELECT * \
+				FROM racers \
+				WHERE name LIKE %s', ('%' + racer_name + '%',))
+	racers = c.fetchall()
+	c.close()
+	con.close()
+	return template('templates/search_results', racers=racers)
 @route('/')
 @route('/laptimes')
 @route('/laptimes/top/<top_num:int>')
@@ -55,7 +70,6 @@ def show_laptimes(top_num=25):
     con.close()
 
     return template('templates/laptimes', rows=data, top_num=top_num)
-
 
 @route('/about')
 def about():
