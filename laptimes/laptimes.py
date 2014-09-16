@@ -2,6 +2,7 @@ import MySQLdb, MySQLdb.cursors
 import config
 from bottle import route, run, template, debug, view, static_file, request
 
+
 @route('/js/<filename>')
 def js_static(filename):
     return static_file(filename, root='./static/js')
@@ -36,9 +37,11 @@ def racer_profile(id):
     con.close()
     return template('templates/racer_profile', racer=racer, laps=laps)
 
+
 @route('/search_racers')
 def search():
 	return template('templates/search')
+
 
 @route('/search_racers', method='POST')
 def search_racers():
@@ -52,6 +55,8 @@ def search_racers():
 	c.close()
 	con.close()
 	return template('templates/search_results', racers=racers)
+
+
 @route('/')
 @route('/laptimes')
 @route('/laptimes/top/<top_num:int>')
@@ -70,6 +75,7 @@ def show_laptimes(top_num=25):
     con.close()
 
     return template('templates/laptimes', rows=data, top_num=top_num)
+
 
 @route('/about')
 def about():
