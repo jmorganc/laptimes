@@ -49,7 +49,7 @@
                 <td><a href="/racer/{{row['id']}}">{{row['name']}}</a></td>
                 <td>{{row['laptime']}}</td>
                 <td>{{row['datetime']}}</td>
-                <td>weather</td>
+                <td>{{weather_summary[row['id']]}}</td>
             </tr>
             %   i += 1
             %end
