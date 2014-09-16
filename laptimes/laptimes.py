@@ -30,7 +30,8 @@ def racer_profile(id):
 
     c.execute('SELECT id, laptime, datetime, created \
                 FROM laptimes \
-                WHERE racer_id = %s', (id,))
+                WHERE racer_id = %s \
+                ORDER BY datetime ASC', (id,))
     laps = c.fetchall()
 
     c.close()
