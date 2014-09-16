@@ -42,14 +42,14 @@
                 <th>Date and Time</th>
                 <th>Conditions</th>
             </tr>
-            %i = 1
+            %i = 1 
             %for row in rows:
             <tr>
                 <td>{{i}}</td>
                 <td><a href="/racer/{{row['id']}}">{{row['name']}}</a></td>
                 <td>{{row['laptime']}}</td>
                 <td>{{row['datetime']}}</td>
-                <td>{{weather_summary[row['id']]}}</td>
+                <td>{{weather_summary[row['id']]['weather']}}</td>
             </tr>
             %   i += 1
             %end
