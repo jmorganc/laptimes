@@ -41,21 +41,21 @@ def racer_profile(id):
 
 @route('/search_racers')
 def search():
-	return template('templates/search', racers=None)
+    return template('templates/search', racers=None)
 
 
 @route('/search_racers', method='POST')
 def search_racers():
-	racer_name = request.forms.get('racer_name')
-	con = mysql_connect()
-	c = con.cursor()
-	c.execute('SELECT * \
-				FROM racers \
-				WHERE name LIKE %s', ('%' + racer_name + '%',))
-	racers = c.fetchall()
-	c.close()
-	con.close()
-	return template('templates/search', racers=racers)
+    racer_name = request.forms.get('racer_name')
+    con = mysql_connect()
+    c = con.cursor()
+    c.execute('SELECT * \
+		FROM racers \
+		WHERE name LIKE %s', ('%' + racer_name + '%',))
+    racers = c.fetchall()
+    c.close()
+    con.close()
+    return template('templates/search', racers=racers)
 
 
 @route('/')
@@ -76,11 +76,14 @@ def show_laptimes(top_num=10):
     con.close()
 
     average = 0.0
+    weather_data = {} 
     for row in data:
         average += row['laptime']
+        weather_data[row['id']] = get_weather(row['datetime'])
     average = average / top_num
 
-    return template('templates/laptimes', rows=data, top_num=top_num, average=average)
+    weather_summary = weather_data
+    return template('templates/laptimes', rows=data, top_num=top_num, average=average, weather_summary=weather_summary)
 
 
 @route('/about')
@@ -91,6 +94,21 @@ def about():
 @route('/contact')
 def contact():
     return template('templates/contact')
+
+# Get nearest weather based on datetime
+def get_weather(datetime):
+    con = mysql_connect()
+    c = con.cursor()
+    c.execute('SELECT weather \
+		FROM weather \
+		WHERE observation_time < %s \
+                ORDER BY observation_time DESC \
+                LIMIT 1', (datetime,))
+    weather = c.fetchone()
+    c.close()
+    con.close()
+
+    return weather
 
 
 # Set up the MySQL connection: host, user, pass, db, parameter to allow for a dictionary to be returned rather than a tuple
