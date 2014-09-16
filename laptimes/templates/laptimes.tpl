@@ -1,5 +1,7 @@
 %rebase('templates/layout.tpl', title='Top {0}'.format(top_num))
-        <h1>Top {{top_num}} Laptimes</h1>
+        <div class="page-header">
+            <h1>Top {{top_num}} Laptimes</h1>
+        </div>
         <table class="table table-striped">
             <tr>
                 <th>Rank</th>

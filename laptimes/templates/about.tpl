@@ -1,2 +1,4 @@
 %rebase('templates/layout.tpl', title='About')
-        <h1>About</h1>
+        <div class="page-header">
+            <h1>About</h1>
+        </div>

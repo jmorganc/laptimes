@@ -1,5 +1,7 @@
 %rebase('templates/layout.tpl', title='Search Results')
-        <h1>Search Results</h1>
+        <div class="page-header">
+            <h1>Search Results</h1>
+        </div>
 		<table class="table table-striped">
             <tr>
                 <th>Racer Name</th>

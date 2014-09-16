@@ -68,7 +68,9 @@
             }
         </script>
 
-        <h1>{{racer['name']}}</h1>
+        <div class="page-header">
+            <h1>{{racer['name']}}</h1>
+        </div>
 
         %for key, val in racer.iteritems():
         {{key}}: {{val}}<br/>
@@ -76,6 +78,10 @@
 
         <br/>
 
-        <div id="table_div"></div>
-        <div id="chart_div" style="width: 900px; height: 500px;"></div>
-        <div id="trend_div" style="width: 900px; height: 500px;"></div>
+        <div class="row">
+            <div id="table_div" class="col-md-12"></div>
+        </div>
+        <div class="row">
+            <div id="chart_div" style="width: 50%; height: 250px;" class="col-md-6"></div>
+            <div id="trend_div" style="width: 50%; height: 250px;" class="col-md-6"></div>
+        </div>
