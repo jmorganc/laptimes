@@ -14,7 +14,11 @@
             });
         </script>
         <div class="page-header">
+            %if top_num > 0:
             <h1>Top {{top_num}} Laptimes</h1>
+            %else:
+            <h1>Top Laptimes</h1>
+            %end
         </div>
 
         %disabled_10 = ''
