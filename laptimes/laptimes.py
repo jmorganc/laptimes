@@ -50,8 +50,8 @@ def search_racers():
     con = mysql_connect()
     c = con.cursor()
     c.execute('SELECT * \
-		FROM racers \
-		WHERE name LIKE %s', ('%' + racer_name + '%',))
+        		FROM racers \
+        		WHERE name LIKE %s', ('%' + racer_name + '%',))
     racers = c.fetchall()
     c.close()
     con.close()
@@ -64,8 +64,12 @@ def search_racers():
 def show_laptimes(top_num=10):
     con = mysql_connect()
     c = con.cursor()
-    if top_num > 500:
-         top_num = 10
+    c.execute('SELECT COUNT(*) as num_racers \
+                FROM racers')
+    num_racers = c.fetchone()['num_racers']
+
+    if top_num > num_racers:
+         top_num = num_racers
     c.execute('SELECT racers.id, racers.name, laptimes.laptime, laptimes.datetime \
                 FROM laptimes \
                 INNER JOIN racers ON laptimes.racer_id = racers.id \
@@ -81,7 +85,7 @@ def show_laptimes(top_num=10):
         average += row['laptime']
         weather = get_weather(row['datetime'])
         weather_data[row['id']] = weather
-    average = average / top_num
+    average = round((average / top_num),3)
 
     return template('templates/laptimes', rows=data, top_num=top_num, average=average, weather_summary=weather_data)
 
@@ -95,13 +99,14 @@ def about():
 def contact():
     return template('templates/contact')
 
-# Get nearest weather based on datetime
+
+# Get nearest observed weather based on a provided datetime
 def get_weather(datetime):
     con = mysql_connect()
     c = con.cursor()
     c.execute('SELECT weather \
-		FROM weather \
-		WHERE observation_time < %s \
+        		FROM weather \
+        		WHERE observation_time < %s \
                 ORDER BY observation_time DESC \
                 LIMIT 1', (datetime,))
     weather = c.fetchone()
@@ -116,7 +121,6 @@ def get_weather(datetime):
 # Set up the MySQL connection: host, user, pass, db, parameter to allow for a dictionary to be returned rather than a tuple
 def mysql_connect(host=config.opts['mysql']['host'], username=config.opts['mysql']['username'], password=config.opts['mysql']['password'], database=config.opts['mysql']['database']):
     return MySQLdb.connect(host, username, password, database, cursorclass=MySQLdb.cursors.DictCursor)
-
 
 debug(True)
 run(reloader=True)
