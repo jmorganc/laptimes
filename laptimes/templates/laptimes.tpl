@@ -103,12 +103,17 @@
             </tr>
             %i = 1
             %for row in rows:
+            %   datacontent_str = "<table class='table table-striped'> <tr><th>Item</th><th>Value</th></tr>"
+            %   for key, value in weather_summary[row['id']].iteritems():
+            %      datacontent_str += (' <tr><td>'+key+'</td><td>'+str(value)+'</td></tr>')
+            %   end
+            %   datacontent_str += '</table>'
             <tr>
                 <td>{{i}}</td>
                 <td><a href="/racer/{{row['id']}}">{{row['name']}}</a></td>
                 <td>{{row['laptime']}}</td>
                 <td>{{row['datetime']}}</td>
-                <td>{{weather_summary[row['id']]['weather']}}</td>
+                <td><a href="#" tabindex="0" data-toggle="popover" data-trigger="focus" title="Weather Report" data-content="{{datacontent_str}}">{{weather_summary[row['id']]['Temperature']}} / {{weather_summary[row['id']]['Weather']}}</a></td>
             </tr>
             %   i += 1
             %end
@@ -121,3 +126,7 @@
                 %end
             </div>
         </div>
+
+        <script type="text/javascript">
+            $("[data-toggle=popover]").popover({html:true})
+        </script>

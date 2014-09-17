@@ -136,9 +136,9 @@ def contact():
 def get_weather(datetime):
     con = mysql_connect()
     c = con.cursor()
-    c.execute('SELECT weather \
-        		FROM weather \
-        		WHERE observation_time < %s \
+    c.execute('SELECT weather AS Weather, temp_f AS Temperature, relative_humidity AS Humidity, wind_dir, wind_mph \
+                FROM weather \
+                WHERE observation_time < %s \
                 ORDER BY observation_time DESC \
                 LIMIT 1', (datetime,))
     weather = c.fetchone()
@@ -147,7 +147,7 @@ def get_weather(datetime):
 
     if weather:
         return weather
-    return {'weather': 'No data recorded'}
+    return {'Temperature': 'No data', 'Weather': 'No data'}
 
 
 # Set up the MySQL connection: host, user, pass, db, parameter to allow for a dictionary to be returned rather than a tuple
