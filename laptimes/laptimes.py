@@ -67,12 +67,16 @@ def search_racers():
 @route('/laptimes')
 @route('/laptimes/top/<top_num:int>')
 @route('/laptimes/date/<year:int>')
+@route('/laptimes/date/<year:int>/top/<top_num:int>')
 @route('/laptimes/date/<year:int>/<month:int>')
+@route('/laptimes/date/<year:int>/<month:int>/top/<top_num:int>')
 @route('/laptimes/date/<year:int>/<month:int>/<day:int>')
+@route('/laptimes/date/<year:int>/<month:int>/<day:int>/top/<top_num:int>')
 def show_laptimes(top_num=10, year=0, month=0, day=0):
     con = mysql_connect()
     c = con.cursor()
 
+    date = (year, month, day)
     sql_params = (top_num,)
 
     date_sql = ''
@@ -96,8 +100,6 @@ def show_laptimes(top_num=10, year=0, month=0, day=0):
                 {0}\
                 ORDER BY laptime ASC \
                 LIMIT %s'.format(date_sql)
-    print query
-    print sql_params
     c.execute(query, sql_params)
     data = c.fetchall()
     c.close()
@@ -114,7 +116,7 @@ def show_laptimes(top_num=10, year=0, month=0, day=0):
     if top_num > 0:
         average = round((average / top_num), 3)
 
-    return template('templates/laptimes', rows=data, top_num=top_num, average=average, weather_summary=weather_data)
+    return template('templates/laptimes', rows=data, top_num=top_num, average=average, weather_summary=weather_data, date=date)
 
 
 @route('/about')

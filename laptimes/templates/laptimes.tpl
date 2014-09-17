@@ -59,10 +59,20 @@
             </div>
             <div class="col-md-5"></div>
             <div class="col-md-4" style="text-align: right;">
-                <a href="/laptimes/top/10" class="btn btn-primary{{disabled_10}}" role="button">Top 10</a>
-                <a href="/laptimes/top/25" class="btn btn-primary{{disabled_25}}" role="button">Top 25</a>
-                <a href="/laptimes/top/50" class="btn btn-primary{{disabled_50}}" role="button">Top 50</a>
-                <a href="/laptimes/top/100" class="btn btn-primary{{disabled_100}}" role="button">Top 100</a>
+                %date_url = ''
+                %if date[0] > 0:
+                %   date_url = 'date/{0}/'.format(date[0])
+                %end
+                %if date[1] > 0:
+                %   date_url = 'date/{0}/{1}/'.format(date[0], date[1])
+                %end
+                %if date[2] > 0:
+                %   date_url = 'date/{0}/{1}/{2}/'.format(date[0], date[1], date[2])
+                %end
+                <a href="/laptimes/{{date_url}}top/10" class="btn btn-primary{{disabled_10}}" role="button">Top 10</a>
+                <a href="/laptimes/{{date_url}}top/25" class="btn btn-primary{{disabled_25}}" role="button">Top 25</a>
+                <a href="/laptimes/{{date_url}}top/50" class="btn btn-primary{{disabled_50}}" role="button">Top 50</a>
+                <a href="/laptimes/{{date_url}}top/100" class="btn btn-primary{{disabled_100}}" role="button">Top 100</a>
             </div>
         </div>
         <br/>
