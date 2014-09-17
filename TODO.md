@@ -1,9 +1,9 @@
 todo
 ========
 
-+ weekly/monthly/yearly average laptime graphs
-+ 'time machine' gives ability to choose a day, see laptimes and weather data for that day
-+ search for specific racer and return laptime data/graphs for them
++ Analytics page with interesting graphs? How laptimes might be influenced by temperature/etc.
++ ~~Search for racers~~
++ 'Clean up' the racer profile page (make more bootstrappy)
 + Bar chart of DKC attendance by day of week, then break down to hourly by day?
 + Weather/temp trends chart
 + Frontpage date selector and/or range options
