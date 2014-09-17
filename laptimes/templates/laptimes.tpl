@@ -37,7 +37,11 @@
 
         <div class="row">
             <div class="col-md-4">
-                <h2 style="margin-top: 0px;">Average laptime: {{average}}</h2>
+                <h2 style="margin-top: 0px;">
+                    %if top_num > 0:
+                    Average laptime: {{average}}
+                    %end
+                </h2>
             </div>
         </div>
         </br>
@@ -83,3 +87,11 @@
             %   i += 1
             %end
         </table>
+
+        <div class="row">
+            <div class="col-md-12" style="text-align: center;">
+                %if top_num == 0:
+                <h3>No results found</h3>
+                %end
+            </div>
+        </div>

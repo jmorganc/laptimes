@@ -104,14 +104,15 @@ def show_laptimes(top_num=10, year=0, month=0, day=0):
     con.close()
 
     top_num = len(data)
-
     average = 0.0
     weather_data = {}
     for row in data:
         average += row['laptime']
         weather = get_weather(row['datetime'])
         weather_data[row['id']] = weather
-    average = round((average / top_num), 3)
+
+    if top_num > 0:
+        average = round((average / top_num), 3)
 
     return template('templates/laptimes', rows=data, top_num=top_num, average=average, weather_summary=weather_data)
 
