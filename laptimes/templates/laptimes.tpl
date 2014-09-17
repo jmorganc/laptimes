@@ -2,6 +2,7 @@
         <script src="/js/bootstrap-datepicker.js"></script>
         <script type="text/javascript">
             $(document).ready(function() {
+                $('[data-toggle=popover]').popover({html:true})
                 $('#datepicker-container .input-group.date').datepicker({
                         format: "yyyy-mm-dd",
                         todayHighlight: true
@@ -126,7 +127,4 @@
                 %end
             </div>
         </div>
-
-        <script type="text/javascript">
-            $("[data-toggle=popover]").popover({html:true})
-        </script>
+        
