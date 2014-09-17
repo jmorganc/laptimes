@@ -1,6 +1,7 @@
 import MySQLdb, MySQLdb.cursors
 import config
 from bottle import route, run, template, debug, view, static_file, request
+import time
 
 
 @route('/js/<filename>')
@@ -116,7 +117,9 @@ def show_laptimes(top_num=10, year=0, month=0, day=0):
     if top_num > 0:
         average = round((average / top_num), 3)
 
-    return template('templates/laptimes', rows=data, top_num=top_num, average=average, weather_summary=weather_data, date=date)
+    current_date = time.strftime('%Y-%m-%d')
+
+    return template('templates/laptimes', rows=data, top_num=top_num, average=average, weather_summary=weather_data, date=date, current_date=current_date)
 
 
 @route('/about')

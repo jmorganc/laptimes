@@ -3,13 +3,13 @@
         <script type="text/javascript">
             $(document).ready(function() {
                 $('#datepicker-container .input-group.date').datepicker({
-                        format: "yyyy-mm-dd"
+                        format: "yyyy-mm-dd",
+                        todayHighlight: true
                     })
                     .on('changeDate', function(e) {
-                        console.log(e.date);
-                        console.log(e.date.toLocaleDateString());
-                        console.log(e.date.parse());
-                        //window.location.href = '/laptimes/date/' + e.date;
+                        date_split = e.date.toLocaleDateString().split('/')
+                        url = '/laptimes/date/' + date_split[2] + '/' + date_split[0] + '/' + date_split[1];
+                        window.location.href = url;
                     });
             });
         </script>
@@ -53,7 +53,19 @@
             <div class="col-md-2">
                 <div id="datepicker-container">
                     <div class="input-group date">
-                        <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                        %if date == (0, 0, 0):
+                        %   value_date = current_date
+                        %else:
+                        %   year, month, day = date[0], date[1], date[2]
+                        %   if month < 10:
+                        %       month = '0{0}'.format(month)
+                        %   end
+                        %   if day < 10:
+                        %       day = '0{0}'.format(day)
+                        %   end
+                        %   value_date = '{0}-{1}-{2}'.format(date[0], month, day)
+                        %end
+                        <input type="text" class="form-control" value="{{value_date}}"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                     </div>
                 </div>
             </div>
