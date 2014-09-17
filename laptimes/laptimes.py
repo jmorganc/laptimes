@@ -18,6 +18,11 @@ def img_static(filename):
     return static_file(filename, root='./static/css')
 
 
+@route('/fonts/<filename>')
+def font_static(filename):
+    return static_file(filename, root='./static/fonts')
+
+
 @route('/racer/<id:int>')
 def racer_profile(id):
     con = mysql_connect()
@@ -61,15 +66,39 @@ def search_racers():
 @route('/')
 @route('/laptimes')
 @route('/laptimes/top/<top_num:int>')
-def show_laptimes(top_num=10):
+@route('/laptimes/date/<year:int>')
+@route('/laptimes/date/<year:int>/<month:int>')
+@route('/laptimes/date/<year:int>/<month:int>/<day:int>')
+def show_laptimes(top_num=10, year=0, month=0, day=0):
     con = mysql_connect()
     c = con.cursor()
 
-    c.execute('SELECT racers.id, racers.name, laptimes.laptime, laptimes.datetime \
+    sql_params = (top_num,)
+
+    date_sql = ''
+    if year > 0:
+        date_sql = 'AND laptimes.datetime >= "%s-01-01 00:00:00" \
+                    AND laptimes.datetime < "%s-01-01 00:00:00"'
+        sql_params = (year, year + 1, top_num)
+        if month > 0:
+            date_sql = 'AND laptimes.datetime >= "%s-%s-01 00:00:00" \
+                    AND laptimes.datetime < "%s-%s-01 00:00:00"'
+            sql_params = (year, month, year, month + 1, top_num)
+            if day > 0:
+                date_sql = 'AND laptimes.datetime >= "%s-%s-%s 00:00:00" \
+                    AND laptimes.datetime < "%s-%s-%s 00:00:00"'
+                sql_params = (year, month, day, year, month, day + 1, top_num)
+
+    query = 'SELECT racers.id, racers.name, laptimes.laptime, laptimes.datetime \
                 FROM laptimes \
                 INNER JOIN racers ON laptimes.racer_id = racers.id \
+                WHERE 1=1 \
+                {0}\
                 ORDER BY laptime ASC \
-                LIMIT %s', (top_num,))
+                LIMIT %s'.format(date_sql)
+    print query
+    print sql_params
+    c.execute(query, sql_params)
     data = c.fetchall()
     c.close()
     con.close()
@@ -77,7 +106,7 @@ def show_laptimes(top_num=10):
     top_num = len(data)
 
     average = 0.0
-    weather_data = {} 
+    weather_data = {}
     for row in data:
         average += row['laptime']
         weather = get_weather(row['datetime'])
@@ -109,7 +138,7 @@ def get_weather(datetime):
     weather = c.fetchone()
     c.close()
     con.close()
-    
+
     if weather:
         return weather
     return {'weather': 'No data recorded'}
