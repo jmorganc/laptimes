@@ -64,12 +64,7 @@ def search_racers():
 def show_laptimes(top_num=10):
     con = mysql_connect()
     c = con.cursor()
-    c.execute('SELECT COUNT(*) as num_racers \
-                FROM racers')
-    num_racers = c.fetchone()['num_racers']
 
-    if top_num > num_racers:
-         top_num = num_racers
     c.execute('SELECT racers.id, racers.name, laptimes.laptime, laptimes.datetime \
                 FROM laptimes \
                 INNER JOIN racers ON laptimes.racer_id = racers.id \
@@ -79,13 +74,15 @@ def show_laptimes(top_num=10):
     c.close()
     con.close()
 
+    top_num = len(data)
+
     average = 0.0
     weather_data = {} 
     for row in data:
         average += row['laptime']
         weather = get_weather(row['datetime'])
         weather_data[row['id']] = weather
-    average = round((average / top_num),3)
+    average = round((average / top_num), 3)
 
     return template('templates/laptimes', rows=data, top_num=top_num, average=average, weather_summary=weather_data)
 
