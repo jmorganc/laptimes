@@ -1,3 +1,4 @@
+*.swp
 dkc_conf.yml
 sftp-config.json
 
