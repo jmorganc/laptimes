@@ -106,7 +106,7 @@
             %for row in rows:
             %   datacontent_str = ''
             %   if weather_data[row['id']]:
-            %      datacontent_str = 'Wind from the {0} at {1} mph.'.format(weather_data[row['id']]['wind_dir'], weather_data[row['id']]['wind_mph'])
+            %      datacontent_str = 'Wind from the {0} at {1} mph'.format(weather_data[row['id']]['wind_dir'], weather_data[row['id']]['wind_mph'])
             %   end
             %   for key, value in weather_data[row['id']].iteritems():
             %      if key in ['Weather', 'Temperature', 'wind_dir', 'wind_mph']:
