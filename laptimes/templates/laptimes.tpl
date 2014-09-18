@@ -121,7 +121,7 @@
                 <td>{{row['datetime']}}</td>
                 <td>
                     %if weather_data[row['id']]:
-                    <a href="#" tabindex="0" data-toggle="popover" data-trigger="focus" title="{{str(weather_data[row['id']]['Temperature'])}}&deg;F and {{weather_data[row['id']]['Weather']}}" data-content="{{datacontent_str}}">
+                    <a href="javascript:void(0);" tabindex="0" data-toggle="popover" data-trigger="focus" title="{{str(weather_data[row['id']]['Temperature'])}}&deg;F and {{weather_data[row['id']]['Weather']}}" data-content="{{datacontent_str}}">
                         {{weather_data[row['id']]['Temperature']}}&deg;F and {{weather_data[row['id']]['Weather']}}
                     </a>
                     %else:
