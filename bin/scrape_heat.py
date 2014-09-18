@@ -17,17 +17,19 @@ def main():
     heat_id = 27040
     soup = scrape(heat_id)
     racer_ids = get_ids(soup)
+    #pprint.pprint(racer_ids)
     heat_info, heat_laptimes = parse(soup, racer_ids, heat_id)
-    pprint.pprint(heat_info)
+    #pprint.pprint(heat_info)
     pprint.pprint(heat_laptimes)
+    sys.exit()
     save(heat_info, heat_laptimes)
 
 
-def scrape(heat_id):
+def scrape(id, page='HeatDetails.aspx?HeatNo='):
     response = cStringIO.StringIO()
 
     c = pycurl.Curl()
-    c.setopt(c.URL, 'http://clubspeedtiming.com/dkcdallas/HeatDetails.aspx?HeatNo={0}'.format(heat_id))
+    c.setopt(c.URL, 'http://clubspeedtiming.com/dkcdallas/{0}{1}'.format(page, id))
     c.setopt(c.USERAGENT, 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36')
     c.setopt(c.VERBOSE, False)
     c.setopt(c.WRITEFUNCTION, response.write)
@@ -47,7 +49,18 @@ def get_ids(soup):
         racer_split = racer.split('">')
         racer_id = racer_split[0]
         racer_name = racer_split[1]
-        racer_ids[racer_name] = racer_id
+        kart_ids = []
+
+        soup = scrape(racer_id, 'RacerHistory.aspx?CustID=')
+        racer_full_name = soup.find('span', {'id': 'lblRacerName'}).contents[0]
+        heat_rows = soup.find_all('tr', class_='Normal')
+        for row in heat_rows:
+            kart_id = row.td.a.contents[0]
+            kart_id = kart_id.split(' - Kart ')[1]
+            datetime = row.td.next_sibling.contents[0].strip('\r').strip('\n').strip('\t').strip('\r\n')
+            kart_ids.append({datetime: kart_id})
+
+        racer_ids[racer_name] = {'id': racer_id, 'full_name': racer_full_name, 'kart_ids': kart_ids}
 
     return racer_ids
 
@@ -62,15 +75,21 @@ def parse(soup, racer_ids, heat_id):
             'type': heat_type,
             'win_by': heat_win_by,
             'date': heat_date,
-            'winner': racer_ids[heat_winner]
+            'winner': racer_ids[heat_winner]['id']
         }
 
-    heat_laptimes = []
+    heat_laptimes = {}
     soup_tables = soup.find_all('table', class_='LapTimes')
     for table in soup_tables:
         soup_table = BeautifulSoup(str(table))
 
         racer_name = soup_table.thead.tr.th.contents[0]
+
+        kart_id = -1
+        for date_kart in racer_ids[racer_name]['kart_ids']:
+            if heat_date in date_kart:
+                kart_id = date_kart[heat_date]
+                break
 
         soup_rows = soup_table.tbody.find_all('tr')
         for lap in soup_rows:
@@ -79,25 +98,20 @@ def parse(soup, racer_ids, heat_id):
                 int(second_td.contents[0][0])
                 time_position = second_td.contents[0].split(' ')
                 lap_num = lap.td.contents[0]
-                #print lap_num, second_td
                 laptime = time_position[0]
                 position = time_position[1].strip('[').strip(']')
 
-                """
-                heats
-                id, type, win_by, date, winner, created
-
-                heats_laptimes
-                id, heat_id, racer_id, kart_id, lap_number, laptime, position, created
-                """
-                heat_laptimes.append({
+                info = {
                     'heat_id': heat_id,
-                    'racer_id': racer_ids[racer_name],
-                    'kart_id': '',
+                    'kart_id': kart_id,
                     'lap_number': lap_num,
                     'laptime': laptime,
                     'position': position
-                })
+                }
+                if racer_ids[racer_name]['id'] not in heat_laptimes:
+                    heat_laptimes[racer_ids[racer_name]['id']] = [info]
+                else:
+                    heat_laptimes[racer_ids[racer_name]['id']].append(info)
             except ValueError:
                 continue
 
