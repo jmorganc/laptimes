@@ -104,17 +104,30 @@
             </tr>
             %i = 1
             %for row in rows:
-            %   datacontent_str = "<table class='table table-striped'> <tr><th>Item</th><th>Value</th></tr>"
-            %   for key, value in weather_summary[row['id']].iteritems():
-            %      datacontent_str += (' <tr><td>'+key+'</td><td>'+str(value)+'</td></tr>')
+            %   datacontent_str = ''
+            %   if weather_data[row['id']]:
+            %      datacontent_str = 'Wind from the {0} at {1} mph.'.format(weather_data[row['id']]['wind_dir'], weather_data[row['id']]['wind_mph'])
             %   end
-            %   datacontent_str += '</table>'
+            %   for key, value in weather_data[row['id']].iteritems():
+            %      if key in ['Weather', 'Temperature', 'wind_dir', 'wind_mph']:
+            %         continue
+            %      end
+            %      datacontent_str += '<div style="padding: 3px 0px;">{0}: {1}</div>'.format(key, str(value))
+            %   end
             <tr>
                 <td>{{i}}</td>
                 <td><a href="/racer/{{row['id']}}">{{row['name']}}</a></td>
                 <td>{{row['laptime']}}</td>
                 <td>{{row['datetime']}}</td>
-                <td><a href="#" tabindex="0" data-toggle="popover" data-trigger="focus" title="Weather Report" data-content="{{datacontent_str}}">{{weather_summary[row['id']]['Temperature']}} / {{weather_summary[row['id']]['Weather']}}</a></td>
+                <td>
+                    %if weather_data[row['id']]:
+                    <a href="#" tabindex="0" data-toggle="popover" data-trigger="focus" title="{{str(weather_data[row['id']]['Temperature'])}}&deg;F and {{weather_data[row['id']]['Weather']}}" data-content="{{datacontent_str}}">
+                        {{weather_data[row['id']]['Temperature']}}&deg;F and {{weather_data[row['id']]['Weather']}}
+                    </a>
+                    %else:
+                    <span style="color: #999;">No data</span>
+                    %end
+                </td>
             </tr>
             %   i += 1
             %end
@@ -127,4 +140,3 @@
                 %end
             </div>
         </div>
-        

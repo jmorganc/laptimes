@@ -119,7 +119,7 @@ def show_laptimes(top_num=10, year=0, month=0, day=0):
 
     current_date = time.strftime('%Y-%m-%d')
 
-    return template('templates/laptimes', rows=data, top_num=top_num, average=average, weather_summary=weather_data, date=date, current_date=current_date)
+    return template('templates/laptimes', rows=data, top_num=top_num, average=average, weather_data=weather_data, date=date, current_date=current_date)
 
 
 @route('/about')
@@ -147,7 +147,7 @@ def get_weather(datetime):
 
     if weather:
         return weather
-    return {'Temperature': 'No data', 'Weather': 'No data'}
+    return {}
 
 
 # Set up the MySQL connection: host, user, pass, db, parameter to allow for a dictionary to be returned rather than a tuple
