@@ -25,7 +25,8 @@ def font_static(filename):
 
 
 @route('/racer/<id:int>')
-def racer_profile(id):
+@route('/racer/<id:int>/kart/<kart_id:int>')
+def racer_profile(id, kart_id=None):
     con = mysql_connect()
     c = con.cursor()
 
@@ -34,15 +35,28 @@ def racer_profile(id):
                 WHERE id = %s', (id,))
     racer = c.fetchone()
 
-    c.execute('SELECT id, laptime, datetime, created \
+    c.execute('SELECT DISTINCT(kart_id)\
+                FROM laptimes\
+                WHERE racer_id = %s\
+                ORDER BY kart_id ASC', (id,))
+    karts = c.fetchall()
+
+    kart_sql = ''
+    sql_params = (id,)
+    if kart_id:
+        kart_sql = 'AND kart_id = %s'
+        sql_params = (id, kart_id)
+
+    c.execute('SELECT id, kart_id, race_id, lap_number, laptime, datetime, created \
                 FROM laptimes \
                 WHERE racer_id = %s \
-                ORDER BY datetime ASC', (id,))
+                {0} \
+                ORDER BY datetime ASC'.format(kart_sql), sql_params)
     laps = c.fetchall()
 
     c.close()
     con.close()
-    return template('templates/racer_profile', racer=racer, laps=laps)
+    return template('templates/racer_profile', racer=racer, laps=laps, karts=karts)
 
 
 @route('/search_racers')
@@ -57,7 +71,7 @@ def search_racers():
     c = con.cursor()
     c.execute('SELECT * \
         		FROM racers \
-        		WHERE name LIKE %s', ('%' + racer_name + '%',))
+        		WHERE racer_name LIKE %s', ('%' + racer_name + '%',))
     racers = c.fetchall()
     c.close()
     con.close()

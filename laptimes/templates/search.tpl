@@ -16,12 +16,14 @@
             <div class="col-md-8">
                 <table class="table table-striped">
                     <tr>
+                        <th>ID</th>
                         <th>Racer Name</th>
                         <th>Date Created</th>
                     </tr>
                     %for racer in racers:
                     <tr>
-                        <td><a href="/racer/{{racer['id']}}">{{racer['name']}}</a></td>
+                        <td>{{racer['id']}}</td>
+                        <td><a href="/racer/{{racer['id']}}">{{racer['racer_name']}}</a></td>
                         <td>{{racer['created']}}</td>
                     </tr>
                     %end

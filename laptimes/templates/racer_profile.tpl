@@ -1,11 +1,11 @@
-%rebase('templates/layout.tpl', title='Profile: {0}'.format(racer['name']))
+%rebase('templates/layout.tpl', title='Profile: {0}'.format(racer['racer_name']))
         <script type="text/javascript" src="https://www.google.com/jsapi"></script>
         <script type="text/javascript">
             google.load("visualization", "1", {packages:["corechart"]});
             google.setOnLoadCallback(drawChart);
             function drawChart() {
                 var data = google.visualization.arrayToDataTable([
-                    ['Laps', 'Time'],
+                    ['Lap', 'Time'],
                     %i = 1
                     %for lap in laps:
                     [{{i}}, {{lap['laptime']}}],
@@ -55,10 +55,21 @@
             function drawTable() {
                 var data = new google.visualization.DataTable();
                 data.addColumn('number', 'Laptime');
+                data.addColumn('number', 'Kart');
+                data.addColumn('number', 'Lap');
+                data.addColumn('number', 'Heat');
                 data.addColumn('string', 'Datetime');
+                data.addColumn('number', 'Temp');
                 data.addRows([
                     %for lap in laps:
-                    [{{lap['laptime']}}, '{{lap['datetime']}}'],
+                    [
+                        {{lap['laptime']}},
+                        {{lap['kart_id']}},
+                        {{lap['lap_number']}},
+                        {{lap['race_id']}},
+                        '{{lap['datetime']}}',
+                        0
+                    ],
                     %end
                 ]);
 
@@ -69,7 +80,18 @@
         </script>
 
         <div class="page-header">
-            <h1>{{racer['name']}} <small>created: {{racer['created']}}</small></h1>
+            <h1>{{racer['racer_name']}} <small>created: {{racer['created']}}</small></h1>
+        </div>
+
+        <div class="row">
+            <div class="col-md-1">
+                <select class="form-control">
+                    <option value="-1">All</option>
+                    %for kart in karts:
+                    <option>{{kart['kart_id']}}</option>
+                    %end
+                </select>
+            </div>
         </div>
 
         <br/>
