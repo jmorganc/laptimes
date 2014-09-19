@@ -99,6 +99,9 @@
                 <th>Rank</th>
                 <th>Racer Name</th>
                 <th>Laptime</th>
+                <th>Kart</th>
+                <th>Lap Number</th>
+                <th>Heat</th>
                 <th>Date and Time</th>
                 <th>Conditions</th>
             </tr>
@@ -116,8 +119,11 @@
             %   end
             <tr>
                 <td>{{i}}</td>
-                <td><a href="/racer/{{row['id']}}">{{row['name']}}</a></td>
+                <td><a href="/racer/{{row['id']}}">{{row['racer_name']}}</a></td>
                 <td>{{row['laptime']}}</td>
+                <td>{{row['kart_id']}}</td>
+                <td>{{row['lap_number']}}</td>
+                <td>{{row['race_id']}}</td>
                 <td>{{row['datetime']}}</td>
                 <td>
                     %if weather_data[row['id']]:
