@@ -79,18 +79,16 @@
             }
         </script>
         <script type="text/javascript">
-            // $('#karts').change(function() {
-            //     console.log('test');
-            //     //url = '#/' + $(this).option.val();
-            //     //alert(url)
-            //     //window.location.href = url;
-            // });
-            // $('select').on('change', function() {
-            //     alert( this.value ); // or $(this).val()
-            // });
-            // function test() {
-            //     alert($('#karts').find(':selected').text());
-            // }
+            $(document).ready(function() {
+                $('#karts').change(function() {
+                    url = "/racer/{{racer['id']}}/kart/" + $(this).find(':selected').val();
+                    window.location.href = url;
+                });
+                $('#heats').change(function() {
+                    url = "/racer/{{racer['id']}}/heat/" + $(this).find(':selected').val();
+                    window.location.href = url;
+                });
+            });
         </script>
 
         <div class="page-header">
@@ -98,13 +96,45 @@
         </div>
 
         <div class="row">
-            <div class="col-md-1">
-                <select id="karts" class="form-control">
-                    <option value="-1">All</option>
-                    %for kart in karts:
-                    <option value="{{kart['kart_id']}}">{{kart['kart_id']}}</option>
-                    %end
-                </select>
+            <div class="col-md-2">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Kart</label>
+                        <div class="col-md-9">
+                            <select id="karts" class="form-control">
+                                <option value="-1">All</option>
+                                %for kart in karts:
+                                %if kart['kart_id'] == kart_id:
+                                %   selected = 'selected="selected" '
+                                %else:
+                                %   selected = ''
+                                %end
+                                <option {{selected}}value="{{kart['kart_id']}}">{{kart['kart_id']}}</option>
+                                %end
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-4">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Heat</label>
+                        <div class="col-md-9">
+                            <select id="heats" class="form-control">
+                                <option value="-1">All</option>
+                                %for heat in heats:
+                                %if heat['race_id'] == heat_id:
+                                %   selected = 'selected="selected" '
+                                %else:
+                                %   selected = ''
+                                %end
+                                <option {{selected}}value="{{heat['race_id']}}">{{heat['race_id']}} - {{heat['datetime']}}</option>
+                                %end
+                            </select>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
 

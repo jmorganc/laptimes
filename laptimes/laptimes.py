@@ -2,6 +2,7 @@ import MySQLdb, MySQLdb.cursors
 import config
 from bottle import route, run, template, debug, view, static_file, request
 import time
+import re
 
 
 @route('/js/<filename>')
@@ -26,7 +27,8 @@ def font_static(filename):
 
 @route('/racer/<id:int>')
 @route('/racer/<id:int>/kart/<kart_id:int>')
-def racer_profile(id, kart_id=None):
+@route('/racer/<id:int>/heat/<heat_id:int>')
+def racer_profile(id, kart_id=-1, heat_id=-1):
     con = mysql_connect()
     c = con.cursor()
 
@@ -37,28 +39,42 @@ def racer_profile(id, kart_id=None):
     if not racer:
         return template('templates/404')
 
+    #racer['racer_name'] = re.sub('[(){}<>:.]', '', racer['racer_name'])
+    #racer['racer_name'] = racer['racer_name'].strip(u'\xa0')
+
     c.execute('SELECT DISTINCT(kart_id)\
                 FROM laptimes\
                 WHERE racer_id = %s\
                 ORDER BY kart_id ASC', (id,))
     karts = c.fetchall()
 
-    kart_sql = ''
+    c.execute('SELECT DISTINCT(l.race_id), r.datetime\
+                FROM laptimes l\
+                LEFT JOIN races r ON r.id = l.race_id\
+                WHERE l.racer_id = %s\
+                ORDER BY race_id ASC', (id,))
+    heats = c.fetchall()
+
+    param_sql = ''
     sql_params = (id,)
-    if kart_id:
-        kart_sql = 'AND kart_id = %s'
+    if kart_id > -1:
+        param_sql = 'AND kart_id = %s'
         sql_params = (id, kart_id)
+
+    if heat_id > -1:
+        param_sql = 'AND race_id = %s'
+        sql_params = (id, heat_id)
 
     c.execute('SELECT id, kart_id, race_id, lap_number, laptime, datetime, created \
                 FROM laptimes \
                 WHERE racer_id = %s \
                 {0} \
-                ORDER BY datetime ASC'.format(kart_sql), sql_params)
+                ORDER BY datetime ASC'.format(param_sql), sql_params)
     laps = c.fetchall()
 
     c.close()
     con.close()
-    return template('templates/racer_profile', racer=racer, laps=laps, karts=karts)
+    return template('templates/racer_profile', racer=racer, laps=laps, karts=karts, kart_id=kart_id, heats=heats, heat_id=heat_id)
 
 
 @route('/search_racers')
