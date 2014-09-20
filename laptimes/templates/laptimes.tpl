@@ -16,7 +16,7 @@
         </script>
         <div class="page-header">
             %if top_num > 0:
-            <h1>Top {{top_num}} Laptimes</h1>
+            <h1>Top {{top_num}} Laptimes <small>Average: {{average}} seconds</small></h1>
             %else:
             <h1>Top Laptimes</h1>
             %end
@@ -40,7 +40,7 @@
         %   disabled_100 = ' disabled'
         %end
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-md-12">
                 <h2 style="margin-top: 0px;">
                     %if top_num > 0:
@@ -49,7 +49,7 @@
                 </h2>
             </div>
         </div>
-        </br>
+        </br> -->
 
         <div class="row">
             <div class="col-md-1">
