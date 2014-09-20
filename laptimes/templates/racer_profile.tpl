@@ -141,9 +141,14 @@
                     url = "/racer/{{racer['id']}}/kart/" + $(this).find(':selected').val();
                     window.location.href = url;
                 });
+
                 $('#heats').change(function() {
                     url = "/racer/{{racer['id']}}/heat/" + $(this).find(':selected').val();
                     window.location.href = url;
+                });
+
+                $('img#profile_img').error(function(){
+                    $(this).parent().hide();
                 });
             });
         </script>
@@ -202,7 +207,7 @@
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-md-12" style="text-align: center;">
-                        <img style="border: 1px solid #999;" src="http://71.170.117.91/CustomerPictures/{{racer['id']}}.jpg" />
+                        <img id="profile_img" style="border: 1px solid #999;" src="http://71.170.117.91/CustomerPictures/{{racer['id']}}.jpg" />
                     </div>
                 </div>
                 <br/>
