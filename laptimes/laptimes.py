@@ -74,8 +74,8 @@ def racer_profile(id, kart_id=-1, heat_id=-1):
 
     average = 0.0
     for lap in laps:
-        average = (average + lap['laptime']) / 2.0
-    average = round(average, 3)
+        average += lap['laptime']
+    average = round(average / len(laps), 3)
 
     weather_data = {}
     for row in laps:
