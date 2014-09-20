@@ -151,7 +151,7 @@
                 data.addColumn('number', 'Lap');
                 data.addColumn('number', 'Heat');
                 data.addColumn('string', 'Datetime');
-                data.addColumn('number', 'Temp');
+                data.addColumn('string', 'Temp');
                 data.addRows([
                     %for lap in laps:
                     [
@@ -160,7 +160,11 @@
                         {{lap['lap_number']}},
                         {{lap['race_id']}},
                         '{{lap['datetime']}}',
-                        0
+                        %if weather_data[lap['id']]:
+                        "{{weather_data[lap['id']]['Temperature']}}"
+                        %else:
+                        '-'
+                        %end
                     ],
                     %end
                 ]);
@@ -274,3 +278,4 @@
             </div>
 
         </div>
+        <br/>

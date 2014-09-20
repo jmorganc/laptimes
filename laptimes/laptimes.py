@@ -72,9 +72,14 @@ def racer_profile(id, kart_id=-1, heat_id=-1):
                 ORDER BY datetime ASC'.format(param_sql), sql_params)
     laps = c.fetchall()
 
+    weather_data = {}
+    for row in laps:
+        weather_data[row['id']] = get_weather(row['datetime'])
+    print(weather_data)
+
     c.close()
     con.close()
-    return template('templates/racer_profile', racer=racer, laps=laps, karts=karts, kart_id=kart_id, heats=heats, heat_id=heat_id)
+    return template('templates/racer_profile', racer=racer, laps=laps, karts=karts, kart_id=kart_id, heats=heats, heat_id=heat_id, weather_data=weather_data)
 
 
 @route('/search_racers')
@@ -177,7 +182,7 @@ def get_weather(datetime):
     c = con.cursor()
     c.execute('SELECT weather AS Weather, temp_f AS Temperature, relative_humidity AS Humidity, wind_dir, wind_mph \
                 FROM weather \
-                WHERE observation_time < %s \
+                WHERE observation_time <= %s \
                 ORDER BY observation_time DESC \
                 LIMIT 1', (datetime,))
     weather = c.fetchone()
