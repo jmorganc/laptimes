@@ -12,6 +12,22 @@
                         url = '/laptimes/date/' + date_split[2] + '/' + date_split[0] + '/' + date_split[1];
                         window.location.href = url;
                     });
+
+                var dp_text = '';
+                %if date[0] != 0:
+                dp_text = '{{date[0]}}';
+                %end
+                %if date[1] != 0:
+                %    leading_zero = ''
+                %    if date[1] < 10:
+                %        leading_zero = '0'
+                %    end
+                dp_text = '{{date[0]}}-{{leading_zero}}{{date[1]}}';
+                %end
+
+                %if date[2] == 0:
+                $('#datepicker').val(dp_text);
+                %end
             });
         </script>
         <div class="page-header">
@@ -66,15 +82,24 @@
                         %   value_date = current_date
                         %else:
                         %   year, month, day = date[0], date[1], date[2]
-                        %   if month < 10:
+                        %   if month < 10 and month > 0:
                         %       month = '0{0}'.format(month)
                         %   end
-                        %   if day < 10:
+                        %   if day < 10 and day > 0:
                         %       day = '0{0}'.format(day)
+                        %   end
+                        %   if month == 0:
+                        %       month = today[1]
+                        %   end
+                        %   if day == 0:
+                        %       day = today[2]
                         %   end
                         %   value_date = '{0}-{1}-{2}'.format(date[0], month, day)
                         %end
-                        <input type="text" class="form-control" value="{{value_date}}"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                        <input id="datepicker" type="text" class="form-control" value="{{value_date}}" />
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-th"></i>
+                        </span>
                     </div>
                 </div>
             </div>
