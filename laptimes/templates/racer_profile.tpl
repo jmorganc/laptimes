@@ -78,6 +78,20 @@
                 table.draw(data, {showRowNumber: true});
             }
         </script>
+        <script type="text/javascript">
+            $('#karts').change(function() {
+                console.log('test');
+                //url = '#/' + $(this).option.val();
+                //alert(url)
+                //window.location.href = url;
+            });
+            // $('select').on('change', function() {
+            //     alert( this.value ); // or $(this).val()
+            // });
+            // function test() {
+            //     alert($('#karts').find(':selected').text());
+            // }
+        </script>
 
         <div class="page-header">
             <h1>{{racer['racer_name']}} <small>created: {{racer['created']}}</small></h1>
@@ -85,10 +99,10 @@
 
         <div class="row">
             <div class="col-md-1">
-                <select class="form-control">
+                <select id="karts" class="form-control">
                     <option value="-1">All</option>
                     %for kart in karts:
-                    <option>{{kart['kart_id']}}</option>
+                    <option value="{{kart['kart_id']}}">{{kart['kart_id']}}</option>
                     %end
                 </select>
             </div>
@@ -100,10 +114,20 @@
             <div id="table_div" class="col-md-6"></div>
             <div class="col-md-6">
                 <div class="row">
-                    <div id="chart_div" style="width: 100%; height: 250px;" class="col-md-12"></div>
+                    <div class="col-md-12" style="text-align: center;">
+                        <img style="border: 1px solid #999;" src="http://71.170.117.91/CustomerPictures/{{racer['id']}}.jpg" />
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="chart_div" style="width: 100%; height: 250px;" class="col-md-12"></div>
+                    </div>
                 </div>
                 <div class="row">
-                    <div id="trend_div" style="width: 100%; height: 250px;" class="col-md-12"></div>
+                    <div class="col-md-12">
+                        <div id="trend_div" style="width: 100%; height: 250px;" class="col-md-12"></div>
+                    </div>
                 </div>
             </div>
 

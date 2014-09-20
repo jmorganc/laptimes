@@ -108,7 +108,7 @@ def show_laptimes(top_num=10, year=0, month=0, day=0):
                     AND laptimes.datetime < "%s-%s-%s 00:00:00"'
                 sql_params = (year, month, day, year, month, day + 1, top_num)
 
-    query = 'SELECT l.id, r.racer_name, l.kart_id, l.race_id, l.lap_number, l.laptime, l.datetime \
+    query = 'SELECT l.id, l.racer_id, r.racer_name, l.kart_id, l.race_id, l.lap_number, l.laptime, l.datetime \
                 FROM laptimes l \
                 LEFT JOIN racers r ON r.id = l.racer_id \
                 WHERE l.laptime > 0.000 \
