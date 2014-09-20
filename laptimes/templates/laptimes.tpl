@@ -119,7 +119,7 @@
             %   end
             <tr>
                 <td>{{i}}</td>
-                <td><a href="/racer/{{row['id']}}">{{row['racer_name']}}</a></td>
+                <td><a href="/racer/{{row['racer_id']}}">{{row['racer_name']}}</a></td>
                 <td>{{row['laptime']}}</td>
                 <td>{{row['kart_id']}}</td>
                 <td>{{row['lap_number']}}</td>
