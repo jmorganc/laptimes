@@ -79,12 +79,12 @@
             }
         </script>
         <script type="text/javascript">
-            $('#karts').change(function() {
-                console.log('test');
-                //url = '#/' + $(this).option.val();
-                //alert(url)
-                //window.location.href = url;
-            });
+            // $('#karts').change(function() {
+            //     console.log('test');
+            //     //url = '#/' + $(this).option.val();
+            //     //alert(url)
+            //     //window.location.href = url;
+            // });
             // $('select').on('change', function() {
             //     alert( this.value ); // or $(this).val()
             // });

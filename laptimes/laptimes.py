@@ -34,6 +34,8 @@ def racer_profile(id, kart_id=None):
                 FROM racers \
                 WHERE id = %s', (id,))
     racer = c.fetchone()
+    if not racer:
+        return template('templates/404')
 
     c.execute('SELECT DISTINCT(kart_id)\
                 FROM laptimes\
