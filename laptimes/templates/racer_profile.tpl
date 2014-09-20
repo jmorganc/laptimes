@@ -14,7 +14,7 @@
                 ]);
 
                 var options = {
-                    title: 'Laptimes',
+                    title: 'Lap Times',
                     curveType: 'function',
                     legend: 'none',
                     hAxis: { title: 'Lap', ticks: {{range(1, len(laps) + 1)}} },
@@ -29,7 +29,7 @@
             google.setOnLoadCallback(drawChart2);
             function drawChart2() {
                 var data = google.visualization.arrayToDataTable([
-                    ['Laps', 'Time'],
+                    ['Lap', 'Time'],
                     %i = 1
                     %for lap in laps:
                     [{{i}}, {{lap['laptime']}}],
@@ -46,6 +46,55 @@
                 };
 
                 var chart = new google.visualization.ScatterChart(document.getElementById('trend_div'));
+                chart.draw(data, options);
+            }
+
+            google.setOnLoadCallback(drawChartPie);
+            function drawChartPie() {
+
+                var data = google.visualization.arrayToDataTable([
+                ['Kart', 'Times Used'],
+                %karts_used = {}
+                %for lap in laps:
+                %   if lap['kart_id'] not in karts_used:
+                %       karts_used[lap['kart_id']] = 1
+                %   else:
+                %       karts_used[lap['kart_id']] += 1
+                %   end
+                %end
+                %for kart in karts_used:
+                ['{{kart}}', {{karts_used[kart]}}],
+                %end
+                ]);
+
+                var options = {
+                title: 'Kart Usage'
+                };
+
+                var chart = new google.visualization.PieChart(document.getElementById('piechart_div'));
+
+                chart.draw(data, options);
+            }
+
+            google.setOnLoadCallback(drawChart3);
+            function drawChart3() {
+                var data = google.visualization.arrayToDataTable([
+                    ['Kart', 'Time'],
+                    %for lap in laps:
+                    [{{lap['kart_id']}}, {{lap['laptime']}}],
+                    %end
+                ]);
+
+                var options = {
+                    title: 'Kart Times messed up moving to bar/average',
+                    curveType: 'function',
+                    legend: 'none',
+                    hAxis: { title: 'Kart', ticks: {{range(1, len(laps) + 1)}} },
+                    vAxis: { title: 'Time (s)' }
+                };
+
+                var chart = new google.visualization.LineChart(document.getElementById('kart_div'));
+
                 chart.draw(data, options);
             }
 
@@ -157,6 +206,16 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div id="trend_div" style="width: 100%; height: 250px;" class="col-md-12"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="piechart_div" style="width: 100%; height: 250px;" class="col-md-12"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="kart_div" style="width: 100%; height: 250px;" class="col-md-12"></div>
                     </div>
                 </div>
             </div>
