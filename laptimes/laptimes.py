@@ -114,16 +114,16 @@ def show_laptimes(top_num=10, year=0, month=0, day=0):
 
     date_sql = ''
     if year > 0:
-        date_sql = 'AND laptimes.datetime >= "%s-01-01 00:00:00" \
-                    AND laptimes.datetime < "%s-01-01 00:00:00"'
+        date_sql = 'AND l.datetime >= "%s-01-01 00:00:00" \
+                    AND l.datetime < "%s-01-01 00:00:00"'
         sql_params = (year, year + 1, top_num)
         if month > 0:
-            date_sql = 'AND laptimes.datetime >= "%s-%s-01 00:00:00" \
-                    AND laptimes.datetime < "%s-%s-01 00:00:00"'
+            date_sql = 'AND l.datetime >= "%s-%s-01 00:00:00" \
+                    AND l.datetime < "%s-%s-01 00:00:00"'
             sql_params = (year, month, year, month + 1, top_num)
             if day > 0:
-                date_sql = 'AND laptimes.datetime >= "%s-%s-%s 00:00:00" \
-                    AND laptimes.datetime < "%s-%s-%s 00:00:00"'
+                date_sql = 'AND l.datetime >= "%s-%s-%s 00:00:00" \
+                    AND l.datetime < "%s-%s-%s 00:00:00"'
                 sql_params = (year, month, day, year, month, day + 1, top_num)
 
     query = 'SELECT l.id, l.racer_id, r.racer_name, l.kart_id, l.race_id, l.lap_number, l.laptime, l.datetime \
