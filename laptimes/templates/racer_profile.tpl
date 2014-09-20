@@ -120,9 +120,10 @@
                     %       if lap['laptime'] > karts_used[lap['kart_id']]['max']:
                     %           karts_used[lap['kart_id']]['max'] = lap['laptime']
                     %       end
-                    %       karts_used[lap['kart_id']]['avg'] = (karts_used[lap['kart_id']]['avg'] + lap['laptime']) / 2.0
+                    %       karts_used[lap['kart_id']]['avg'] += lap['laptime']
                     %   end
                     %end
+                    %karts_used[lap['kart_id']]['avg'] = round(karts_used[lap['kart_id']]['avg'] / len(laps), 3)
                     %for kart in sorted(karts_used):
                     ['{{kart}}', {{karts_used[kart]['min']}}, {{karts_used[kart]['avg']}}, {{karts_used[kart]['avg']}}, {{karts_used[kart]['max']}}],
                     %end
