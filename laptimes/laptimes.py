@@ -72,6 +72,11 @@ def racer_profile(id, kart_id=-1, heat_id=-1):
                 ORDER BY datetime ASC'.format(param_sql), sql_params)
     laps = c.fetchall()
 
+    average = 0.0
+    for lap in laps:
+        average = (average + lap['laptime']) / 2.0
+    average = round(average, 3)
+
     weather_data = {}
     for row in laps:
         weather_data[row['id']] = get_weather(row['datetime'])
@@ -79,7 +84,7 @@ def racer_profile(id, kart_id=-1, heat_id=-1):
 
     c.close()
     con.close()
-    return template('templates/racer_profile', racer=racer, laps=laps, karts=karts, kart_id=kart_id, heats=heats, heat_id=heat_id, weather_data=weather_data)
+    return template('templates/racer_profile', racer=racer, laps=laps, karts=karts, kart_id=kart_id, heats=heats, heat_id=heat_id, weather_data=weather_data, average=average)
 
 
 @route('/search_racers')

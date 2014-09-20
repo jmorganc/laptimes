@@ -237,6 +237,10 @@
                     </div>
                 </form>
             </div>
+            <!-- <div class="col-md-2"></div> -->
+            <div class="col-md-6" style="text-align: center;">
+                <h2 style="margin-top: 0px;">Average Laptime: {{average}}</h2>
+            </div>
         </div>
 
         <br/>
