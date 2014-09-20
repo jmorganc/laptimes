@@ -76,35 +76,70 @@
                 chart.draw(data, options);
             }
 
-            google.setOnLoadCallback(drawChartBar);
-            function drawChartBar() {
+            // google.setOnLoadCallback(drawChartBar);
+            // function drawChartBar() {
 
-            var data = google.visualization.arrayToDataTable([
-                ['Kart', 'Avg'],
-                %karts_used = {}
-                %for lap in laps:
-                %   if lap['kart_id'] not in karts_used:
-                %       karts_used[lap['kart_id']] = lap['laptime']
-                %   else:
-                %       karts_used[lap['kart_id']] = (karts_used[lap['kart_id']] + lap['laptime']) / 2.0
-                %   end
-                %end
-                %for kart in karts_used:
-                ['{{kart}}', {{karts_used[kart]}}],
-                %end
-            ]);
+            // var data = google.visualization.arrayToDataTable([
+            //     ['Kart', 'Avg'],
+            //     %karts_used = {}
+            //     %for lap in laps:
+            //     %   if lap['kart_id'] not in karts_used:
+            //     %       karts_used[lap['kart_id']] = lap['laptime']
+            //     %   else:
+            //     %       karts_used[lap['kart_id']] = (karts_used[lap['kart_id']] + lap['laptime']) / 2.0
+            //     %   end
+            //     %end
+            //     %for kart in karts_used:
+            //     ['{{kart}}', {{karts_used[kart]}}],
+            //     %end
+            // ]);
 
-            var options = {
-                title: 'Kart Average Lap',
-                hAxis: {title: 'Kart'},
-                vAxis: {title: 'Average Time (s)'}
-            };
+            // var options = {
+            //     title: 'Kart Average Lap',
+            //     hAxis: {title: 'Kart'},
+            //     vAxis: {title: 'Average Time (s)'}
+            // };
 
-            var chart = new google.visualization.ColumnChart(document.getElementById('barchart_div'));
+            // var chart = new google.visualization.ColumnChart(document.getElementById('barchart_div'));
 
-            chart.draw(data, options);
+            // chart.draw(data, options);
+            // }
 
+
+            google.setOnLoadCallback(drawChartCandlestick);
+            function drawChartCandlestick() {
+                var data = google.visualization.arrayToDataTable([
+                    %karts_used = {}
+                    %for lap in laps:
+                    %   if lap['kart_id'] not in karts_used:
+                    %       karts_used[lap['kart_id']] = {'min': lap['laptime'], 'max': lap['laptime'], 'avg': lap['laptime']}
+                    %   else:
+                    %       if lap['laptime'] < karts_used[lap['kart_id']]['min']:
+                    %           karts_used[lap['kart_id']]['min'] = lap['laptime']
+                    %       end
+                    %       if lap['laptime'] > karts_used[lap['kart_id']]['max']:
+                    %           karts_used[lap['kart_id']]['max'] = lap['laptime']
+                    %       end
+                    %       karts_used[lap['kart_id']]['avg'] = (karts_used[lap['kart_id']]['avg'] + lap['laptime']) / 2.0
+                    %   end
+                    %end
+                    %for kart in sorted(karts_used):
+                    ['{{kart}}', {{karts_used[kart]['min']}}, {{karts_used[kart]['avg']}}, {{karts_used[kart]['avg']}}, {{karts_used[kart]['max']}}],
+                    %end
+                    // Treat first row as data as well.
+                ], true);
+
+                var options = {
+                    title: 'Kart Average Lap',
+                    hAxis: {title: 'Kart'},
+                    vAxis: {title: 'Average Time (s)'}
+                };
+
+                var chart = new google.visualization.CandlestickChart(document.getElementById('candlestickchart_div'));
+
+                chart.draw(data, options);
             }
+
 
             google.load("visualization", "1", {packages:["table"]});
             google.setOnLoadCallback(drawTable);
@@ -207,7 +242,7 @@
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-md-12" style="text-align: center;">
-                        <img id="profile_img" style="border: 1px solid #999;" src="http://71.170.117.91/CustomerPictures/{{racer['id']}}.jpg" />
+                        <img id="profile_img" style="border: 1px solid #999; width: 320px; height: 240px;" src="http://71.170.117.91/CustomerPictures/{{racer['id']}}.jpg" />
                     </div>
                 </div>
                 <br/>
@@ -226,9 +261,14 @@
                         <div id="piechart_div" style="width: 100%; height: 250px;" class="col-md-12"></div>
                     </div>
                 </div>
-                <div class="row">
+                <!-- <div class="row">
                     <div class="col-md-12">
                         <div id="barchart_div" style="width: 100%; height: 250px;" class="col-md-12"></div>
+                    </div>
+                </div> -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="candlestickchart_div" style="width: 100%; height: 250px;" class="col-md-12"></div>
                     </div>
                 </div>
             </div>
