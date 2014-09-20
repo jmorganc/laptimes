@@ -8,3 +8,4 @@ todo
 + Weather/temp trends chart
 + Frontpage date selector and/or range options
 + Racer comparison/heat comparison
++ / could be top racers (by score?)
