@@ -112,7 +112,7 @@
                     %karts_used = {}
                     %for lap in laps:
                     %   if lap['kart_id'] not in karts_used:
-                    %       karts_used[lap['kart_id']] = {'min': lap['laptime'], 'max': lap['laptime'], 'avg': lap['laptime']}
+                    %       karts_used[lap['kart_id']] = {'min': lap['laptime'], 'max': lap['laptime'], 'avg': lap['laptime'], 'count': 1}
                     %   else:
                     %       if lap['laptime'] < karts_used[lap['kart_id']]['min']:
                     %           karts_used[lap['kart_id']]['min'] = lap['laptime']
@@ -121,11 +121,12 @@
                     %           karts_used[lap['kart_id']]['max'] = lap['laptime']
                     %       end
                     %       karts_used[lap['kart_id']]['avg'] += lap['laptime']
+                    %       karts_used[lap['kart_id']]['count'] += 1
                     %   end
                     %end
-                    %karts_used[lap['kart_id']]['avg'] = round(karts_used[lap['kart_id']]['avg'] / len(laps), 3)
                     %for kart in sorted(karts_used):
-                    ['{{kart}}', {{karts_used[kart]['min']}}, {{karts_used[kart]['avg']}}, {{karts_used[kart]['avg']}}, {{karts_used[kart]['max']}}],
+                    %avg = round(karts_used[kart]['avg'] / karts_used[kart]['count'], 3)
+                    ['{{kart}}', {{karts_used[kart]['min']}}, {{avg}}, {{avg}}, {{karts_used[kart]['max']}}],
                     %end
                     // Treat first row as data as well.
                 ], true);
