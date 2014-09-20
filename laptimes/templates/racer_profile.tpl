@@ -76,26 +76,34 @@
                 chart.draw(data, options);
             }
 
-            google.setOnLoadCallback(drawChart3);
-            function drawChart3() {
-                var data = google.visualization.arrayToDataTable([
-                    ['Kart', 'Time'],
-                    %for lap in laps:
-                    [{{lap['kart_id']}}, {{lap['laptime']}}],
-                    %end
-                ]);
+            google.setOnLoadCallback(drawChartBar);
+            function drawChartBar() {
 
-                var options = {
-                    title: 'Kart Times messed up moving to bar/average',
-                    curveType: 'function',
-                    legend: 'none',
-                    hAxis: { title: 'Kart', ticks: {{range(1, len(laps) + 1)}} },
-                    vAxis: { title: 'Time (s)' }
-                };
+            var data = google.visualization.arrayToDataTable([
+                ['Kart', 'Avg'],
+                %karts_used = {}
+                %for lap in laps:
+                %   if lap['kart_id'] not in karts_used:
+                %       karts_used[lap['kart_id']] = lap['laptime']
+                %   else:
+                %       karts_used[lap['kart_id']] = (karts_used[lap['kart_id']] + lap['laptime']) / 2.0
+                %   end
+                %end
+                %for kart in karts_used:
+                ['{{kart}}', {{karts_used[kart]}}],
+                %end
+            ]);
 
-                var chart = new google.visualization.LineChart(document.getElementById('kart_div'));
+            var options = {
+                title: 'Kart Average Lap',
+                hAxis: {title: 'Kart'},
+                vAxis: {title: 'Average Time (s)'}
+            };
 
-                chart.draw(data, options);
+            var chart = new google.visualization.ColumnChart(document.getElementById('barchart_div'));
+
+            chart.draw(data, options);
+
             }
 
             google.load("visualization", "1", {packages:["table"]});
@@ -215,7 +223,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div id="kart_div" style="width: 100%; height: 250px;" class="col-md-12"></div>
+                        <div id="barchart_div" style="width: 100%; height: 250px;" class="col-md-12"></div>
                     </div>
                 </div>
             </div>
