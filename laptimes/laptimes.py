@@ -153,17 +153,19 @@ def show_laptimes(top_num=10, year=0, month=0, day=0):
     top_num = len(data)
     average = 0.0
     weather_data = {}
+    laptimes_minutes = {}
     for row in data:
         average += row['laptime']
         weather = get_weather(row['datetime'])
         weather_data[row['id']] = weather
+        laptimes_minutes[row['id']] = convert_seconds(row['laptime'])
 
     if top_num > 0:
         average = round((average / top_num), 3)
 
     current_date = time.strftime('%Y-%m-%d')
 
-    return template('templates/laptimes', rows=data, top_num=top_num, average=average, weather_data=weather_data, date=date, current_date=current_date)
+    return template('templates/laptimes', rows=data, top_num=top_num, average=average, weather_data=weather_data, date=date, current_date=current_date, laptimes_minutes=laptimes_minutes)
 
 
 @route('/about')
@@ -174,6 +176,12 @@ def about():
 @route('/contact')
 def contact():
     return template('templates/contact')
+
+
+def convert_seconds(laptime):
+    minutes = laptime / 60.0
+    seconds = laptime % 60
+    return '{0}:{1}'.format(int(minutes), seconds)
 
 
 # Get nearest observed weather based on a provided datetime
