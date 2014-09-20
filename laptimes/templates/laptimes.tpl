@@ -41,7 +41,7 @@
         %end
 
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-12">
                 <h2 style="margin-top: 0px;">
                     %if top_num > 0:
                     Average laptime: {{average}}
@@ -54,6 +54,10 @@
         <div class="row">
             <div class="col-md-1">
                 <a href="/" class="btn btn-primary" role="button">All time</a>
+            </div>
+            <div class="col-md-1">
+                %today = current_date.split('-')
+                <a href="/laptimes/date/{{today[0]}}/{{today[1]}}/{{today[2]}}" class="btn btn-primary" role="button">Today</a>
             </div>
             <div class="col-md-2">
                 <div id="datepicker-container">
@@ -74,7 +78,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-5"></div>
+            <div class="col-md-4"></div>
             <div class="col-md-4" style="text-align: right;">
                 %date_url = ''
                 %if date[0] > 0:
