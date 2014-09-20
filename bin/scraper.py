@@ -5,6 +5,10 @@ from bs4 import BeautifulSoup
 import time
 import datetime
 import MySQLdb
+import sys, os
+
+sys.path.append(os.path.abspath('{0}/../../'.format(os.path.abspath(__file__))))
+from laptimes import config
 
 
 def main():
@@ -84,7 +88,7 @@ def get_laptimes(racer_id, race_id):
 
 
 def mysql_save(race):
-	connection = MySQLdb.connect('', '', '', '')
+	connection = mysql_connect()
 	cursor = connection.cursor()
 
 	date_time = race['race_date']
@@ -182,7 +186,7 @@ def update_queue(racer_id, cursor):
 
 
 def thread_control():
-	connection = MySQLdb.connect('', '', '', '')
+	connection = mysql_connect()
 	cursor = connection.cursor()
 
 	cursor.execute('LOCK TABLE threading WRITE')
@@ -208,6 +212,10 @@ def thread_control():
 		cursor.execute('UNLOCK TABLES')
 		cursor.close()
 		connection.close()
+
+
+def mysql_connect():
+	return MySQLdb.connect(config.opts['mysql']['host'], config.opts['mysql']['username'], config.opts['mysql']['password'], config.opts['mysql']['database'])
 
 
 main()
