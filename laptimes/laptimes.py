@@ -196,8 +196,9 @@ def get_weather(datetime):
     c.execute('SELECT weather AS Weather, temp_f AS Temperature, relative_humidity AS Humidity, wind_dir, wind_mph \
                 FROM weather \
                 WHERE observation_time <= %s \
+                AND observation_time > %s - INTERVAL 30 MINUTE \
                 ORDER BY observation_time DESC \
-                LIMIT 1', (datetime,))
+                LIMIT 1', (datetime, datetime))
     weather = c.fetchone()
     c.close()
     con.close()
