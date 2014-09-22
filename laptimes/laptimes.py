@@ -80,7 +80,6 @@ def racer_profile(id, kart_id=-1, heat_id=-1):
     weather_data = {}
     for row in laps:
         weather_data[row['id']] = get_weather(row['datetime'])
-    print(weather_data)
 
     c.close()
     con.close()
