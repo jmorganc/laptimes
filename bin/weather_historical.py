@@ -21,6 +21,7 @@ def main():
 
     while date_start != date_end:
         print 'Processing:', date_start
+        sys.stdout.flush()
         year = date_start.year
         month = date_start.month
         day = date_start.day
@@ -37,6 +38,7 @@ def main():
 
         date_start += datetime.timedelta(days=1)
         print 'Sleeping for a minute.\n'
+        sys.stdout.flush()        
         time.sleep(70)
 
 
