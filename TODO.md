@@ -13,4 +13,4 @@ todo
 + Heat playback. Show laptimes and position after each lap.
 + Google analytics
 + Domain (.io?)
-+ Think of a better name. Platform as a service, with subdomains for each client? (dkc.<laptimes>.com)
++ Think of a better name. Platform as a service, with subdomains for each client? (dkc.laptimes.com)
