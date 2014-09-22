@@ -9,3 +9,8 @@ todo
 + Frontpage date selector and/or range options
 + Racer comparison/heat comparison
 + / could be top racers (by score?)
++ Live timing app
++ Heat playback. Show laptimes and position after each lap.
++ Google analytics
++ Domain (.io?)
++ Think of a better name. Platform as a service, with subdomains for each client? (dkc.<laptimes>.com)
