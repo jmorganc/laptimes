@@ -15,9 +15,9 @@ from laptimes import config
 
 
 def main():
-    date_start = datetime.date(2013, 5, 26)
+    date_start = datetime.date(2013, 9, 30)
     date_end = datetime.date(2013, 12, 31)
-    #date_end = datetime.date(2014, 9, 13)
+    #date_end = datetime.date(2014, 9, 15)
 
     while date_start != date_end:
         print 'Processing:', date_start
