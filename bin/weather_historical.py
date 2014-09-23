@@ -15,11 +15,11 @@ from laptimes import config
 
 
 def main():
-    date_start = datetime.date(2013, 9, 30)
-    date_end = datetime.date(2013, 12, 31)
+    date_start = datetime.date(2014, 1, 1)
+    date_end = datetime.date(2014, 12, 31)
     #date_end = datetime.date(2014, 9, 15)
 
-    while date_start != date_end:
+    while date_start <= date_end:
         print 'Processing:', date_start
         sys.stdout.flush()
         year = date_start.year
@@ -39,7 +39,7 @@ def main():
         date_start += datetime.timedelta(days=1)
         print 'Sleeping for a minute.\n'
         sys.stdout.flush()        
-        time.sleep(70)
+        time.sleep(7)
 
 
 def get_weather(citystate, weather_date):
