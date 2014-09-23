@@ -15,8 +15,8 @@ from laptimes import config
 
 
 def main():
-    date_start = datetime.date(2013, 1, 1)
-    date_end = datetime.date(2013, 5, 24)
+    date_start = datetime.date(2012, 6, 30)
+    date_end = datetime.date(2012, 12, 31)
     #date_end = datetime.date(2014, 9, 15)
 
     while date_start <= date_end:
