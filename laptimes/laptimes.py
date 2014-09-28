@@ -2,6 +2,9 @@ import MySQLdb, MySQLdb.cursors
 import config
 from bottle import route, run, template, debug, view, static_file, request
 import time
+import urllib
+import urllib2
+from bs4 import BeautifulSoup
 import re
 
 
@@ -39,8 +42,8 @@ def racer_profile(id, kart_id=-1, heat_id=-1):
     if not racer:
         return template('templates/404')
 
-    #racer['racer_name'] = re.sub('[(){}<>:.]', '', racer['racer_name'])
-    #racer['racer_name'] = racer['racer_name'].strip(u'\xa0')
+    # racer['racer_name'] = re.sub('[(){}<>:.]', '', racer['racer_name'])
+    # racer['racer_name'] = racer['racer_name'].strip(u'\xa0')
 
     c.execute('SELECT DISTINCT(kart_id)\
                 FROM laptimes\
@@ -97,8 +100,8 @@ def search_racers():
     con = mysql_connect()
     c = con.cursor()
     c.execute('SELECT * \
-        		FROM racers \
-        		WHERE racer_name LIKE %s', ('%' + racer_name + '%',))
+                FROM racers \
+                WHERE racer_name LIKE %s', ('%' + racer_name + '%',))
     racers = c.fetchall()
     c.close()
     con.close()
@@ -172,6 +175,28 @@ def show_laptimes(top_num=10, year=0, month=0, day=0):
     return template('templates/laptimes', rows=data, top_num=top_num, average=average, weather_data=weather_data, date=date, current_date=current_date, laptimes_minutes=laptimes_minutes)
 
 
+@route('/live')
+def get_live_scores():
+    url = 'http://dkcdallas.clubspeedtiming.com/sp_center/cslivescore.aspx'
+    post_data_values = {
+        '__EVENTTARGET': 'ddlTrack',
+        '__VIEWSTATE': '/wEPDwUJNjAyMjUyNzk0D2QWAgIDD2QWDAIDD2QWAmYPZBYCZg9kFgQCAQ8QDxYGHg5EYXRhVmFsdWVGaWVsZAUCSUQeDURhdGFUZXh0RmllbGQFB1RyYWNrTm8eC18hRGF0YUJvdW5kZ2QQFQMLTm9ydGggVHJhY2sLU291dGggVHJhY2sLU3VwZXIgVHJhY2sVAwExATIBMxQrAwNnZ2cWAWZkAgMPDxYCHgdWaXNpYmxlaGRkAgUPZBYCZg9kFgICAQ8PFgIeBFRleHRkZGQCBw9kFgJmD2QWBmYPDxYCHwQFFzEwIG1pbiBBZHVsdCBTdXBlciBIZWF0ZGQCAQ8PFgIfBAUQQnkgQmVzdCBMYXAgVGltZWRkAgIPDxYCHwQFDDAwIExhcHMgTGVmdGRkAgkPPCsACwEADxYIHghEYXRhS2V5cxYAHgtfIUl0ZW1Db3VudGYeCVBhZ2VDb3VudAIBHhVfIURhdGFTb3VyY2VJdGVtQ291bnRmZGQCCw9kFgJmD2QWAmYPDxYCHwRlZGQCDQ8PFgIfA2hkZGQw/Qa8Y6HSGXM9gF7Kpqj6rq2RhNh0CuaYkL/odKCUTg==',
+        '__VIEWSTATEGENERATOR': 'BAC7619F',
+        '__EVENTVALIDATION': '/wEWBQLDsPeKCAL10pSYAwL6vb72DwL7vb72DwL4vb72DwI8+lY+QUxYwEioop2rurZh1aN4K/KyOLLgYN0te/sC',
+        'ddlTrack': 3
+    }
+    data = urllib.urlencode(post_data_values)
+    req = urllib2.Request(url, data)
+    racers = []
+    try:
+        response = urllib2.urlopen(req, timeout=3)
+        page = response.read()
+        racers = parse_live_board_page(page)
+    except Exception:
+        pass
+    return template('templates/live', racers=racers)
+
+
 @route('/about')
 def about():
     return template('templates/about')
@@ -207,9 +232,27 @@ def get_weather(datetime):
     return {}
 
 
+# Parse the live timing board and return a list of lists of racer details 
+def parse_live_board_page(page):
+    soup = BeautifulSoup(page)
+    table = soup.find('table', {'id': 'dg'})
+    rows = table.find_all('tr')
+
+    racers = []
+
+    for row in rows[1:]:
+        tds = row.find_all('td')
+        racer_info = []
+        for td in tds:
+            racer_info.append(td.get_text().strip())
+        racers.append(racer_info)
+    return racers
+
+
 # Set up the MySQL connection: host, user, pass, db, parameter to allow for a dictionary to be returned rather than a tuple
 def mysql_connect(host=config.opts['mysql']['host'], username=config.opts['mysql']['username'], password=config.opts['mysql']['password'], database=config.opts['mysql']['database']):
     return MySQLdb.connect(host, username, password, database, cursorclass=MySQLdb.cursors.DictCursor)
+
 
 debug(True)
 run(reloader=True)
